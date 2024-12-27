@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}AI Search Bar{% endblock title %}
+
+{% block content %}
+<div class="hero min-h-screen bg-base-200">
+  <div class="hero-content text-center">
+    <div class="card w-96 bg-base-100 shadow-xl">
+      <div class="card-body">
+        <h1 class="card-title text-3xl justify-center mb-6">AI Search Bar</h1>
+        <div class="form-control">
+          <div class="input-group space-y-2">
+            <input type="text" placeholder="Enter your search query" class="input input-bordered w-full" />
+            <button class="btn btn-primary">
+              search
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
