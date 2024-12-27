@@ -7,10 +7,11 @@
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{% block title %}{% endblock %}</title>
     <script src="https://unpkg.com/htmx.org@2.0.4" integrity="sha384-HGfztofotfshcF7+8n44JQL2oJmowVChPTg48S+jvZoztPfvwD79OC/LTtG6dMp+" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/hyperscript.org@0.9.13"></script>
 		{% tailwind_css %}
 	</head>
 
-	<body>
+	<body data-theme="cupcake" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
     <header>
     </header>
 
@@ -23,5 +24,6 @@
     </footer>
     {% block extra_body %}
     <!-- Additional body elements or scripts can be added in child templates -->
-    {% endblock %}	</body>
+    {% endblock %}	
+  </body>
 </html>

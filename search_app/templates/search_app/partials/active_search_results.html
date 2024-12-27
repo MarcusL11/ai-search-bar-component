@@ -1,0 +1,84 @@
+{% load markdownify %}
+<div id="search-results" class="bg-base-200 border-2 border-base-300 rounded-lg shadow-xl relative">
+  <div id="ai-search-results">
+    {% if results %}
+    <div 
+      id="ask_ai"
+      class="flex justify-between items-center gap-x-4 p-4 hover:bg-base-300 rounded-lg transition-colors duration-200 cursor-pointer"
+      hx-post="{% url 'ask_ai' %}"
+      hx-swap="innerHTML"
+      hx-target="#ai-search-results"
+      hx-include="#ask_ai_input"
+      hx-trigger="click"
+      _="
+      on click 
+      set #prompt-input-mobile.value to '' then
+      set #prompt-input-desktop.value to ''
+      end">
+      <div id="ask_ai_container" class="flex gap-x-4 items-center">
+        AI
+        <span class="htmx-indicator loading loading-spinner loading-md"></span>
+        <div>
+          <h3 class="text-lg font-semibold text-primary mb-1">Ask AI</h3>
+          <span >{{ search_content }}</span>
+          <input id="ask_ai_input" name="ask_ai_input" class="hidden" value="{{ search_content }}">
+        </div>
+      </div>
+    </div>
+    {% for shoe in results %}
+    <a href="" class="flex justify-between items-center gap-x-2 p-4 hover:bg-base-300 rounded-lg transition-colors duration-200">
+      <div>
+        <h3 class="text-lg font-semibold text-primary mb-1">{{ shoe.brand }}</h3>
+        <h4 class="text-lg font-semibold text-primary mb-1">{{ shoe.model }}</h4>
+        <p class="text-sm text-base-content/70">
+          Shoe's preview description
+        </p>
+        <div class="flex items-center mt-2 text-xs text-base-content/50">
+          <span class="mr-3">
+            Year: 
+            {{ shoe.year_produced|date:"M d, Y" }}
+          </span>
+          <span>
+            SKU Code: 
+            {{ shoe.sku_code }}
+          </span>
+          <span>
+            Rarity:
+            {{ shoe.rarityt }}
+          </span>
+        </div>
+      </div>
+    </a>
+    {% endfor %}
+    {% else %}
+    <div 
+      id="ask_ai"
+      class="flex justify-between items-center gap-x-4 p-4 hover:bg-base-300 rounded-lg transition-colors duration-200 cursor-pointer"
+      hx-post="{% url 'ask_ai' %}"
+      hx-swap="innerHTML"
+      hx-target="#ai-search-results"
+      hx-include="#ask_ai_input"
+      hx-trigger="click"
+      _="
+      on click 
+      add .hidden to #sparkles then
+      set #prompt-input-mobile.value to '' then
+      set #prompt-input-desktop.value to ''
+      end
+      on htmx:afterSwap
+      remove .hidden from #sparkles
+      end">
+      <div id="ask_ai_container" class="flex gap-x-4 items-center">
+        AI
+        <span class="htmx-indicator loading loading-spinner loading-md"></span>
+        <div>
+          <h3 class="text-lg font-semibold text-primary mb-1">Ask AI</h3>
+          <span >{{ search_content }}</span>
+          <input id="ask_ai_input" name="ask_ai_input" class="hidden" value="{{ search_content }}">
+        </div>
+      </div>
+    </div>
+    <p class="p-4 text-center text-base-content/50">No related products found.</p>
+    {% endif %}
+  </div>
+</div>

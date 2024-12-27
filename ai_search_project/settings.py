@@ -1,4 +1,5 @@
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -29,6 +30,8 @@ INSTALLED_APPS = [
     "django_ai_assistant",
     "tailwind",
     "theme",
+    "mdeditor",
+    "markdownify.apps.MarkdownifyConfig",
 ]
 
 TAILWIND_APP_NAME = "theme"
@@ -122,3 +125,8 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+X_FRAME_OPTIONS = "SAMEORIGIN"
+MEDIA_ROOT = os.path.join(BASE_DIR, "uploads")
+MEDIA_URL = "/media/"

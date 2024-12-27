@@ -1,4 +1,5 @@
 from django.contrib import admin
-from .models import Participant
+from .models import CollectableShoe, ShoeDescription
 
-admin.site.register(Participant)
+admin.site.register(CollectableShoe)
+admin.site.register(ShoeDescription)

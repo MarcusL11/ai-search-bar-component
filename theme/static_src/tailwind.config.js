@@ -41,6 +41,9 @@ module.exports = {
      */
     // '../../**/*.py'
   ],
+  daisyui: {
+    themes: ["light", "dark", "cupcake"],
+  },
   theme: {
     extend: {},
   },
