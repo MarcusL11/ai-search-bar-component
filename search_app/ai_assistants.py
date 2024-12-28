@@ -16,7 +16,7 @@ class AssistantResponse(BaseModel):
 
     response: str = Field(description="A conversational response to the user's query")
     shoe_component: str = Field(
-        description="the context for shoe recommendation",
+        description="HTML component for blog recommendation (TailwindCSS and DaisyUI classes)",
     )
 
 
@@ -74,6 +74,7 @@ class ShoeRecommendationAssistant(AIAssistant):
                 "color": shoe.color,
                 "sku_code": shoe.sku_code,
                 "rarity": shoe.rarity,
+                "description": shoe.description,
                 "collaboration_artist": shoe.collaboration_artist,
                 "year_produced": shoe.year_produced,
                 "retail_price": float(shoe.retail_price),

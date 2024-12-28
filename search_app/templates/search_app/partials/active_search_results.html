@@ -1,84 +1,104 @@
-{% load markdownify %}
+
 <div id="search-results" class="bg-base-200 border-2 border-base-300 rounded-lg shadow-xl relative">
-  <div id="ai-search-results">
+  <button 
+    id="close-search"
+    class="absolute top-0 right-0 p-1 bg-base-300 text-primary rounded-full shadow-md hover:bg-primary hover:text-base-300 transition-all duration-300 transform hover:scale-110"
+    hx-get="{% url 'active_search' %}"
+    hx-target="#search-results"
+    hx-swap="innerHTML"
+    _="on click 
+    set #prompt_input.value to '' 
+    add .hidden to me
+    put '' into #search-results">
+    Close
+  </button>
+  <div id="ai-search-results" class="space-y-4 p-4">
     {% if results %}
+    <!-- "Ask AI" Section -->
     <div 
       id="ask_ai"
-      class="flex justify-between items-center gap-x-4 p-4 hover:bg-base-300 rounded-lg transition-colors duration-200 cursor-pointer"
+      class="flex items-center gap-4 bg-base-100 p-4 rounded-lg shadow-sm hover:bg-base-200 transition-colors duration-200 cursor-pointer"
       hx-post="{% url 'ask_ai' %}"
       hx-swap="innerHTML"
       hx-target="#ai-search-results"
       hx-include="#ask_ai_input"
       hx-trigger="click"
-      _="
-      on click 
-      set #prompt-input-mobile.value to '' then
-      set #prompt-input-desktop.value to ''
-      end">
-      <div id="ask_ai_container" class="flex gap-x-4 items-center">
-        AI
-        <span class="htmx-indicator loading loading-spinner loading-md"></span>
+      hx-indicator="#ai-initial-loading">
+      <div class="flex items-center gap-4">
+        <!-- Optional Icon or Placeholder -->
+        <div id="ai-initial-loading" class="htmx-indicator my-2 items-center">
+          <span class="htmx-indicator-content flex">
+            AI is thinking...
+          </span>
+          <span class="loading loading-spinner loading-md"></span>
+        </div>
         <div>
-          <h3 class="text-lg font-semibold text-primary mb-1">Ask AI</h3>
-          <span >{{ search_content }}</span>
+          <h3 class="text-lg font-semibold text-primary">Ask AI</h3>
+          <p class="text-sm text-base-content/80">{{ search_content }}</p>
           <input id="ask_ai_input" name="ask_ai_input" class="hidden" value="{{ search_content }}">
         </div>
       </div>
     </div>
+
+    <!-- Divider -->
+    <div class="border-t border-base-300"></div>
+
+    <!-- Product Results -->
     {% for shoe in results %}
-    <a href="" class="flex justify-between items-center gap-x-2 p-4 hover:bg-base-300 rounded-lg transition-colors duration-200">
-      <div>
-        <h3 class="text-lg font-semibold text-primary mb-1">{{ shoe.brand }}</h3>
-        <h4 class="text-lg font-semibold text-primary mb-1">{{ shoe.model }}</h4>
+
+    <a 
+      href="" 
+      class="flex items-center gap-4 p-4 bg-base-100 rounded-lg hover:bg-base-300 transition-colors duration-200">
+
+      <figure class="px-10 pt-10 rounded-lg">
+        <img
+          src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+          alt="Shoes" />
+      </figure>
+
+      <div class="flex flex-col text-left">
+        <h3 class="text-lg font-semibold text-primary">{{ shoe.brand }}</h3>
+        <h4 class="text-md text-primary mb-1">{{ shoe.model }}</h4>
         <p class="text-sm text-base-content/70">
-          Shoe's preview description
+          {{ shoe.description|truncatewords:20 }}
         </p>
-        <div class="flex items-center mt-2 text-xs text-base-content/50">
-          <span class="mr-3">
-            Year: 
-            {{ shoe.year_produced|date:"M d, Y" }}
-          </span>
-          <span>
-            SKU Code: 
-            {{ shoe.sku_code }}
-          </span>
-          <span>
-            Rarity:
-            {{ shoe.rarityt }}
-          </span>
+        <div class="flex items-center gap-4 mt-2 text-xs text-base-content/50">
+          <span class="items-center text-center">📅 {{ shoe.year_produced }}</span>
+          <span class="items-center text-center">🆔 {{ shoe.sku_code }}</span>
+          <span class="items-center text-center">🌟 {{ shoe.rarity }}</span>
         </div>
       </div>
     </a>
+
     {% endfor %}
     {% else %}
+    <!-- No Results Found -->
     <div 
       id="ask_ai"
-      class="flex justify-between items-center gap-x-4 p-4 hover:bg-base-300 rounded-lg transition-colors duration-200 cursor-pointer"
+      class="flex items-center gap-4 bg-base-100 p-4 rounded-lg shadow-sm hover:bg-base-200 transition-colors duration-200 cursor-pointer"
       hx-post="{% url 'ask_ai' %}"
       hx-swap="innerHTML"
       hx-target="#ai-search-results"
       hx-include="#ask_ai_input"
       hx-trigger="click"
-      _="
-      on click 
-      add .hidden to #sparkles then
-      set #prompt-input-mobile.value to '' then
-      set #prompt-input-desktop.value to ''
-      end
-      on htmx:afterSwap
-      remove .hidden from #sparkles
-      end">
-      <div id="ask_ai_container" class="flex gap-x-4 items-center">
-        AI
-        <span class="htmx-indicator loading loading-spinner loading-md"></span>
+      hx-indicator="#ai-initial-loading">
+      <div class="flex items-center gap-4">
+        <!-- Optional Icon or Placeholder -->
+        <div id="ai-initial-loading" class="htmx-indicator my-2 items-center">
+          <span class="htmx-indicator-content flex">
+            AI is thinking...
+          </span>
+          <span class="loading loading-spinner loading-md"></span>
+        </div>
         <div>
-          <h3 class="text-lg font-semibold text-primary mb-1">Ask AI</h3>
-          <span >{{ search_content }}</span>
+          <h3 class="text-lg font-semibold text-primary">Ask AI</h3>
+          <p class="text-sm text-base-content/80">{{ search_content }}</p>
           <input id="ask_ai_input" name="ask_ai_input" class="hidden" value="{{ search_content }}">
         </div>
       </div>
     </div>
-    <p class="p-4 text-center text-base-content/50">No related products found.</p>
+    <p class="text-center text-base-content/50">No related products found.</p>
     {% endif %}
   </div>
 </div>
+

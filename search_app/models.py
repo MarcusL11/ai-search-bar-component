@@ -25,6 +25,7 @@ class CollectableShoe(models.Model):
     color = models.CharField(max_length=50)
     size = models.DecimalField(max_digits=4, decimal_places=1)
     rarity = models.CharField(max_length=2, choices=RARITY_CHOICES)
+    description = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.brand} {self.model} - {self.color} (Size: {self.size})"

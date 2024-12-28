@@ -9,7 +9,8 @@ from django_ai_assistant.helpers.use_cases import (
     create_thread,
     create_message,
 )
-from django_ai_assistant.models import Message
+from django_ai_assistant.models import Message, Thread
+from django.shortcuts import get_object_or_404
 
 
 def index(request) -> HttpResponse:
@@ -106,6 +107,57 @@ def ask_ai(request) -> HttpResponse:
     return TemplateResponse(
         request,
         "search_app/partials/ask_ai_results.html",
+        context,
+        status=200,
+    )
+
+
+def ask_ai_cont(request, thread_id) -> HttpResponse:
+    """This is the view function that handles the continuation chat
+    feature via Django AI Assistant library passing the Thread ID.
+    """
+    thread = get_object_or_404(Thread, id=thread_id, created_by=request.user)
+
+    # Get the user's new input
+    user_prompt = request.POST.get("ask_ai_cont_input")
+
+    # Create a new message in the thread
+    assistant_id = AISearchAssistant.id
+    message = ThreadMessageIn(
+        assistant_id=assistant_id,
+        content=user_prompt,
+    )
+    create_message(
+        assistant_id=assistant_id,
+        thread=thread,
+        user=request.user,
+        content=message.content,
+        request=request,
+    )
+
+    # Fetch all messages in the thread
+    thread_messages = (
+        Message.objects.filter(thread=thread).values("message").order_by("created_at")  # pyright: ignore
+    )
+
+    # Collect all AI responses
+    ai_responses = []
+    for message in thread_messages:
+        message_type = message["message"]["type"]
+        if message_type == "ai":
+            message_content = message["message"]["data"]["content"]
+            ai_responses.append(message_content)
+
+    # Join all AI responses with a separator
+    combined_ai_response = "\n\n---\n\n".join(ai_responses)
+
+    context = {
+        "ai_response": combined_ai_response,
+        "thread_id": thread.id,
+    }
+    return TemplateResponse(
+        request,
+        "search_app/partials/ask_ai_cont_results.html",
         context,
         status=200,
     )
