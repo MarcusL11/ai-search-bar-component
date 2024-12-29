@@ -2,6 +2,9 @@
 
 Welcome to the **AI-Powered Search Bar** project! This repository contains a Django-based web application that integrates advanced AI functionalities to provide dynamic search capabilities and intelligent recommendations. Leveraging a combination of modern frontend and backend technologies, this project showcases how to build a feature-rich search interface enhanced by AI assistants.
 
+## Demo
+[AI Search Bar Demo](https://www.marcusandrewlee.com/projects/search-app)
+
 ## Features
 
 - **Dynamic Search Interface:** Real-time search with instant results using HTMX.
