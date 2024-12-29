@@ -16,7 +16,7 @@ class AssistantResponse(BaseModel):
 
     response: str = Field(description="A conversational response to the user's query")
     shoe_component: str = Field(
-        description="HTML component for blog recommendation (TailwindCSS and DaisyUI classes)",
+        description="well formatted markdown syntax that includes informatio about the shoe: "
     )
 
 
@@ -33,9 +33,9 @@ class ShoeRecommendationAssistant(AIAssistant):
         "Use the provided functions to answer queries and run operations.\n"
         "Maintain a friendly and casual tone. If no information is available for the user's questions, "
         "state that you don't have that specific detail. "
-        "Your response must be in markdown syntax, here is an example: \n"
-        "A conversational response to the user's query\n"
-        "### {brand} {model} \n"
+        "Your response must be formatted nicely in markdown syntax that includes the following information: \n"
+        "Brand { brand }\n"
+        "Model { model }\n"
         "Color: {color}\n"
         "SKU: {sku_code}\n"
         "Rarity: {rarity}\n"
